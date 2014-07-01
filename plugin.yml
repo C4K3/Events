@@ -1,0 +1,14 @@
+name: Events
+main: org.c4k3.Events.Events
+version: 2 #1.7.2B1869
+author: C4K3.org
+description: Lets admins setup a teleport point, and then allow players to teleport to it
+commands:
+  ea:
+    description: Toggles active/inactive state of plugin.
+  eventset:
+    description: Sets the teleport point for the event.
+  event:
+    description: Teleports player to the event teleport point.
+  eventlist:
+    description: Lists all players currently participating in events.
