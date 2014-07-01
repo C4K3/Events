@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scoreboard.Team;
 
 /** Represents data about a player currently participating in the event.
  * The data is for the player's info outside the event, so that we can
@@ -194,6 +195,8 @@ public class EventPlayer {
 				player.addPotionEffects(potionEffects);
 				player.setLevel(playerLevel);
 				player.setExp(playerXP);
+				Team team = player.getScoreboard().getPlayerTeam(player);
+				if ( team != null ) team.removePlayer(player);
 			}
 		};
 

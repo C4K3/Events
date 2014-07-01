@@ -6,11 +6,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+/** Monitors people respawning
+ * If somebody participating in the event respawns, it teleports them home
+ * and gives them back previous items and health, etc */
 public class PlayerRespawn implements Listener {
 
-	/** Monitors people respawning
-	 * If somebody participating in the event respawns, it teleports them home
-	 * and gives them back previous items and health, etc */
 	private static EventPlayer eventPlayer;
 
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)

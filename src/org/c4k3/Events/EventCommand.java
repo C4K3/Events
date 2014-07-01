@@ -102,6 +102,9 @@ public class EventCommand implements CommandExecutor {
 		player.setGameMode(GameMode.SURVIVAL);
 		player.teleport(Event.getStartLocation());
 
+		player.sendMessage(ChatColor.AQUA + "Teleporting you to the event arena."
+				+ "\nWhen you die, you will be teleported back with all your items and XP in order.");
+
 		return true;
 
 	}

@@ -2,6 +2,8 @@ package org.c4k3.Events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,10 +61,15 @@ public class EventSetCommand implements CommandExecutor {
 		if ( sWorld != null || sX != null || sY != null || sZ != null ) {
 			try {
 
-				startLocation.setWorld(Events.instance.getServer().getWorld(sWorld));
-				startLocation.setX(Integer.parseInt(sX));
-				startLocation.setY(Integer.parseInt(sY));
-				startLocation.setZ(Integer.parseInt(sZ));
+				World world = Events.instance.getServer().getWorld(sWorld);
+				
+				Block block = world.getBlockAt(Integer.parseInt(sX), Integer.parseInt(sY), Integer.parseInt(sZ) );
+				
+				startLocation = block.getLocation();
+				
+				/* Adjust x and z coordinates so the player spawns in the center of the block */
+				startLocation.setX(startLocation.getX() + 0.5);
+				startLocation.setZ(startLocation.getZ() + 0.5);
 
 			} catch(Exception e) {
 				if ( player != null ) player.sendMessage(ChatColor.RED +  "Incorrect location arguments for /eventset\n" +
