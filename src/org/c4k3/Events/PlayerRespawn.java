@@ -1,10 +1,13 @@
 package org.c4k3.Events;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.scoreboard.Team;
 
 /** Monitors people respawning
  * If somebody participating in the event respawns, it teleports them home
@@ -25,14 +28,32 @@ public class PlayerRespawn implements Listener {
 
 		eventPlayer = Event.getEventPlayer(sPlayer);
 
-		/* If the player should be respawning inside the event */
-		if ( !eventPlayer.getIsQuitting() ) return;
-
-		event.setRespawnLocation(eventPlayer.getLocation());
-
 		Player player = event.getPlayer();
 
-		eventPlayer.sendHome(player, false);
+		Location teamSpawn = null;
+
+		Team team = player.getScoreboard().getPlayerTeam(player);
+
+		if ( team != null ) {
+			Events.instance.getLogger().info("team is not null");
+			teamSpawn = Event.getTeamSpawn(team.getName());
+		}
+
+		/* If isQuitting is true, or if the player is not in a team with a registered team spawn, then send player home */
+		if ( eventPlayer.getIsQuitting() || teamSpawn == null ) {
+
+			event.setRespawnLocation(eventPlayer.getLocation());
+
+			eventPlayer.sendHome(player);
+
+		} else {
+			/* else we send the player to their team's spawn location */
+			event.setRespawnLocation(teamSpawn);
+
+			player.sendMessage(ChatColor.AQUA + "Respawning at your team's spawn."
+					+ "\nTo leave the event, type " + ChatColor.GOLD + "/quitevent");
+
+		}
 
 	}
 

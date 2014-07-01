@@ -12,3 +12,7 @@ commands:
     description: Teleports player to the event teleport point.
   eventlist:
     description: Lists all players currently participating in events.
+  quitevent:
+    description: Leave the event you're currently in.
+  endevent:
+    description: Let's admins end the event for all players

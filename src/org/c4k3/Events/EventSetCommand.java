@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 /**
  * This class handles the /eventset command
@@ -34,6 +35,7 @@ public class EventSetCommand implements CommandExecutor {
 		String sX = null;
 		String sY = null;
 		String sZ = null;
+		String sTeam = null;
 
 		for ( String arg : args ) {
 
@@ -53,23 +55,26 @@ public class EventSetCommand implements CommandExecutor {
 			else if ( arg.startsWith("z=") )
 				sZ = arg.substring(2);
 
+			else if ( arg.startsWith("team=") )
+				sTeam = arg.substring(5);
+
 		}
 
-		Location startLocation = new Location(null, 0, 0, 0);
+		Location location = new Location(null, 0, 0, 0);
 
 		/* If any of the location arguments have been passed, we try to create a Bukkit.Location out of them */
 		if ( sWorld != null || sX != null || sY != null || sZ != null ) {
 			try {
 
 				World world = Events.instance.getServer().getWorld(sWorld);
-				
+
 				Block block = world.getBlockAt(Integer.parseInt(sX), Integer.parseInt(sY), Integer.parseInt(sZ) );
-				
-				startLocation = block.getLocation();
-				
+
+				location = block.getLocation();
+
 				/* Adjust x and z coordinates so the player spawns in the center of the block */
-				startLocation.setX(startLocation.getX() + 0.5);
-				startLocation.setZ(startLocation.getZ() + 0.5);
+				location.setX(location.getX() + 0.5);
+				location.setZ(location.getZ() + 0.5);
 
 			} catch(Exception e) {
 				if ( player != null ) player.sendMessage(ChatColor.RED +  "Incorrect location arguments for /eventset\n" +
@@ -82,8 +87,7 @@ public class EventSetCommand implements CommandExecutor {
 		} else {
 			/* If none of the arguments are passed, the sending player's location is used */
 			if ( player != null ) { 
-				startLocation = player.getLocation();
-				player.sendMessage(ChatColor.AQUA + "The event spawn has been set to your current location.");
+				location = player.getLocation();
 			}
 
 			/* But if the sending player is console, they have no location */
@@ -95,9 +99,35 @@ public class EventSetCommand implements CommandExecutor {
 
 		}
 
-		/* Now everything should be in order */
-		Event.setStartLocation(startLocation);
-		Event.setIsComplete(true);
+		/* The given location is not the event's start location
+		 * but the spawn location of a team */
+		if ( sTeam != null ) {
+
+			/* Check that the team exists */
+			Team team = Events.instance.getServer().getScoreboardManager().getMainScoreboard().getTeam(sTeam);
+			if ( team == null ) {
+				String message = "No such scoreboard team. Type /scoreboard teams list for a list of scoreboard teams.";
+				if ( player == null ) Events.instance.getLogger().info(message);
+				else player.sendMessage(ChatColor.RED + message);
+				return true;
+			}
+
+			Event.setTeamSpawn(sTeam, location);
+
+			String message = "Location of " + sTeam + " team's spawn location has been set.";
+			if ( player == null ) Events.instance.getLogger().info(message);
+			else player.sendMessage(ChatColor.AQUA + message);
+
+		}
+
+		/* The given location is the event's start location */
+		else if ( sTeam == null ) {
+			Event.setStartLocation(location);
+			Event.setIsComplete(true);
+			String message = "The event spawn has been set to the specified location.";
+			if ( player == null ) Events.instance.getLogger().info(message);
+			else player.sendMessage(ChatColor.AQUA + message);
+		}
 
 		return true;
 

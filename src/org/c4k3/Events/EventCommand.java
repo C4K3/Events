@@ -71,7 +71,7 @@ public class EventCommand implements CommandExecutor {
 		GameMode gameMode = player.getGameMode();
 
 		/* Save all this data */
-		EventPlayer eventPlayer = new EventPlayer(sPlayer, playerLocation, playerFoodLevel, playerLevel, playerXP, armorContents, inventoryContents, playerHealth, potionEffects, gameMode);
+		EventPlayer eventPlayer = new EventPlayer(sPlayer, playerLocation, playerFoodLevel, playerLevel, playerXP, armorContents, inventoryContents, playerHealth, potionEffects, gameMode, false);
 		eventPlayer.save();
 
 		/* Log it all, just in case */

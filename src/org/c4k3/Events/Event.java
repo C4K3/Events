@@ -14,6 +14,7 @@ public class Event {
 	private static Boolean isComplete = new Boolean("false");
 	private static Location startLocation;
 	private static HashMap<String, EventPlayer> eventPlayers = new HashMap<String, EventPlayer>();
+	private static HashMap<String, Location> teamSpawns = new HashMap<String, Location>();
 
 	/**
 	 * Gets whether the event is active or not.
@@ -111,6 +112,31 @@ public class Event {
 	 */
 	public static Set<String> getActivePlayers() {
 		return eventPlayers.keySet();
+	}
+
+	/**
+	 * Get the spawn location for a particular team.
+	 * @param name Name of the team.
+	 * @return Location of team's spawn.
+	 */
+	public static Location getTeamSpawn(String name) {
+		return teamSpawns.get(name);
+	}
+
+	/**
+	 * Saves the team's location.
+	 * @param name Name of  the team.
+	 * @param location Location of the team's spawn.
+	 */
+	public static void setTeamSpawn(String name, Location location) {
+		teamSpawns.put(name, location);
+	}
+
+	/**
+	 * Clear all team's spawns.
+	 */
+	public static void clearTeamSpawns() {
+		teamSpawns.clear();
 	}
 
 }

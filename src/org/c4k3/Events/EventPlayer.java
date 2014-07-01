@@ -29,7 +29,7 @@ public class EventPlayer {
 	private Boolean isQuitting;
 
 	public EventPlayer(String name, Location location, Integer foodLevel, Integer playerLevel, float playerXP, ItemStack[] armorContents, 
-			ItemStack[] inventoryContents, Double playerHealth, Collection<PotionEffect> potionEffects, GameMode playerGameMode) {
+			ItemStack[] inventoryContents, Double playerHealth, Collection<PotionEffect> potionEffects, GameMode playerGameMode, Boolean isQuitting) {
 		this.name = name;
 		this.location = location;
 		this.foodLevel = foodLevel;
@@ -40,7 +40,7 @@ public class EventPlayer {
 		this.playerHealth = playerHealth;
 		this.potionEffects = potionEffects;
 		this.playerGameMode = playerGameMode;
-		this.isQuitting = true;
+		this.isQuitting = isQuitting;
 	}
 
 	/**
@@ -170,14 +170,12 @@ public class EventPlayer {
 	 *  If the player is dead, then we don't want to teleport them,
 	 *  but then we'll instead already have set their respawn location.
 	 *  @param player Bukkit.entity.Player object for the player 
-	 *  @param teleport Whether to teleport the player. 
 	 */
-	public void sendHome(final Player player, Boolean teleport) {
+	public void sendHome(final Player player) {
 
 		Events.instance.getLogger().info(player.getName());
 
 		/* We set what we can now. The rest we have to set later because it can't be set while the player is resurrecting */
-		if ( teleport) player.teleport(location);
 		player.getInventory().setArmorContents(armorContents);
 		player.getInventory().setContents(inventoryContents);
 		player.setGameMode(playerGameMode);
@@ -200,7 +198,7 @@ public class EventPlayer {
 			}
 		};
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Events.instance, fixTask, 100L); // 5 second delay
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Events.instance, fixTask, 80L); // 5 second delay
 
 		/* finally, remove the EventPlayer object for this player */
 		this.remove();
