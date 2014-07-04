@@ -17,7 +17,6 @@ import org.bukkit.scoreboard.Team;
  */
 public class EventSetCommand implements CommandExecutor {
 
-	/** This class handles the /eventset command. */
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		Player player = null;
@@ -39,24 +38,33 @@ public class EventSetCommand implements CommandExecutor {
 
 		for ( String arg : args ) {
 
-			arg = arg.toLowerCase(); // So that startsWith becomes case-insensitive
-
-			if ( arg.startsWith("world=") )
+			if ( arg.toLowerCase().startsWith("world=") )
 				/* Sanity checking isn't really necessary here. Here we just store the data,
 				 * and then try to parse it into a location later on. If it's invalid, we'll know then. */
 				sWorld = arg.substring(6);
 
-			else if ( arg.startsWith("x=") )
+			else if ( arg.toLowerCase().startsWith("x=") )
 				sX = arg.substring(2);
 
-			else if ( arg.startsWith("y=") )
+			else if ( arg.toLowerCase().startsWith("y=") )
 				sY = arg.substring(2);
 
-			else if ( arg.startsWith("z=") )
+			else if ( arg.toLowerCase().startsWith("z=") )
 				sZ = arg.substring(2);
 
-			else if ( arg.startsWith("team=") )
+			else if ( arg.toLowerCase().startsWith("team=") )
 				sTeam = arg.substring(5);
+
+			else {
+				/* An invalid argument was passed. */
+				String message = "You tried to use an invalid argument with /eventset."
+						+ "\nThe argument in question was: " + arg
+						+ "\nThe correct syntax is: /eventset [x=] [y=] [z=] [world=] [team=]"
+						+ "\nExample: /eventset x=26 y=75 z=-154 world=events";
+				if ( player == null ) Events.instance.getLogger().info(message);
+				else player.sendMessage(ChatColor.RED + message);
+				return true;
+			}
 
 		}
 
@@ -106,7 +114,8 @@ public class EventSetCommand implements CommandExecutor {
 			/* Check that the team exists */
 			Team team = Events.instance.getServer().getScoreboardManager().getMainScoreboard().getTeam(sTeam);
 			if ( team == null ) {
-				String message = "No such scoreboard team. Type /scoreboard teams list for a list of scoreboard teams.";
+				String message = "No such scoreboard team. Type /scoreboard teams list"
+						+ "\nfor a list of scoreboard teams.";
 				if ( player == null ) Events.instance.getLogger().info(message);
 				else player.sendMessage(ChatColor.RED + message);
 				return true;
