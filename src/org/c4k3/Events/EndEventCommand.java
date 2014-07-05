@@ -1,5 +1,7 @@
 package org.c4k3.Events;
 
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,10 +29,10 @@ public class EndEventCommand implements CommandExecutor {
 			return true;
 		}
 
-		for ( String sPlayer : Event.getActivePlayers() ) {
-			Player tPlayer = Events.instance.getServer().getPlayerExact(sPlayer);
+		for ( UUID uuid : Event.getActivePlayers() ) {
+			Player tPlayer = Events.instance.getServer().getPlayer(uuid);
 
-			EventPlayer eventPlayer = Event.getEventPlayer(sPlayer);
+			EventPlayer eventPlayer = Event.getEventPlayer(uuid);
 
 			eventPlayer.setIsQuitting(true);
 

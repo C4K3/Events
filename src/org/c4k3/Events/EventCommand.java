@@ -1,6 +1,7 @@
 package org.c4k3.Events;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -48,10 +49,10 @@ public class EventCommand implements CommandExecutor {
 			return true;
 		}
 
-		String sPlayer = sender.getName();
+		UUID uuid = player.getUniqueId();
 
 		/* Player is already in the event */
-		if ( Event.isPlayerActive(sPlayer) ) {
+		if ( Event.isPlayerActive(uuid) ) {
 			sender.sendMessage(ChatColor.RED + "You cannot join the same event twice.\n" +
 					"If you wish to quit the event, type /kill");
 			return true;
@@ -59,7 +60,8 @@ public class EventCommand implements CommandExecutor {
 
 		if ( player.isInsideVehicle() ) player.leaveVehicle();
 
-		/* Everything seems to be in order. Saving all player info for when the event is over */		
+		/* Everything seems to be in order. Saving all player info for when the event is over */
+		String sPlayer = player.getName();
 		Location playerLocation = player.getLocation();
 		int playerFoodLevel = player.getFoodLevel();
 		int playerLevel = player.getLevel();
@@ -71,7 +73,7 @@ public class EventCommand implements CommandExecutor {
 		GameMode gameMode = player.getGameMode();
 
 		/* Save all this data */
-		EventPlayer eventPlayer = new EventPlayer(sPlayer, playerLocation, playerFoodLevel, playerLevel, playerXP, armorContents, inventoryContents, playerHealth, potionEffects, gameMode, false);
+		EventPlayer eventPlayer = new EventPlayer(uuid, sPlayer, playerLocation, playerFoodLevel, playerLevel, playerXP, armorContents, inventoryContents, playerHealth, potionEffects, gameMode, false);
 		eventPlayer.save();
 
 		/* Log it all, just in case */

@@ -1,5 +1,7 @@
 package org.c4k3.Events;
 
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -19,14 +21,14 @@ public class PlayerRespawn implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 
-		String sPlayer = event.getPlayer().getName();
+		UUID uuid = event.getPlayer().getUniqueId();
 
 		/* If player is not participating in the event */
-		if ( !Event.isPlayerActive(sPlayer) ) {
+		if ( !Event.isPlayerActive(uuid) ) {
 			return;
 		}
 
-		eventPlayer = Event.getEventPlayer(sPlayer);
+		eventPlayer = Event.getEventPlayer(uuid);
 
 		Player player = event.getPlayer();
 

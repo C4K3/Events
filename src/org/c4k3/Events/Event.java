@@ -2,6 +2,7 @@ package org.c4k3.Events;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Location;
 
@@ -13,7 +14,7 @@ public class Event {
 	private static Boolean isActive = new Boolean("false");
 	private static Boolean isComplete = new Boolean("false");
 	private static Location startLocation;
-	private static HashMap<String, EventPlayer> eventPlayers = new HashMap<String, EventPlayer>();
+	private static HashMap<UUID, EventPlayer> eventPlayers = new HashMap<UUID, EventPlayer>();
 	private static HashMap<String, Location> teamSpawns = new HashMap<String, Location>();
 
 	/**
@@ -73,44 +74,44 @@ public class Event {
 	 * Saves an EventPlayer object in the eventPlayers HashMap.
 	 * 
 	 * For later retrieval when the player is to be sent home.
-	 * @param name Name of the player.
+	 * @param uuid UUID of the player.
 	 * @param eventPlayer EventPlayer object of the player.
 	 */
-	public static void saveEventPlayer(String name, EventPlayer eventPlayer) {
-		eventPlayers.put(name, eventPlayer);
+	public static void saveEventPlayer(UUID uuid, EventPlayer eventPlayer) {
+		eventPlayers.put(uuid, eventPlayer);
 	}
 
 	/**
 	 * Gets a stored EventPlayer object.
-	 * @param name Name of the player.
+	 * @param uuid UUID of the player.
 	 * @return EventPlayer object of the player.
 	 */
-	public static EventPlayer getEventPlayer(String name) {
-		return eventPlayers.get(name);
+	public static EventPlayer getEventPlayer(UUID uuid) {
+		return eventPlayers.get(uuid);
 	}
 
 	/**
 	 * Deletes a stored EventPlayer object.
-	 * @param name Name of the player.
+	 * @param uuid UUID of the player.
 	 */
-	public static void removeEventPlayer(String name) {
-		eventPlayers.remove(name);
+	public static void removeEventPlayer(UUID uuid) {
+		eventPlayers.remove(uuid);
 	}
 
 	/**
 	 * Gets whether the player is currently playing an event.
-	 * @param name Name of the player.
+	 * @param uuid UUID of the player.
 	 * @return Whether player is in an event.
 	 */
-	public static Boolean isPlayerActive(String name) {		
-		return eventPlayers.containsKey(name);
+	public static Boolean isPlayerActive(UUID uuid) {		
+		return eventPlayers.containsKey(uuid);
 	}
 
 	/**
 	 * Get a set of the names of all players currently playing an event.
-	 * @return Name of all players currently playing an event.
+	 * @return UUID of all players currently playing an event.
 	 */
-	public static Set<String> getActivePlayers() {
+	public static Set<UUID> getActivePlayers() {
 		return eventPlayers.keySet();
 	}
 

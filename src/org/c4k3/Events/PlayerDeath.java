@@ -13,7 +13,7 @@ public class PlayerDeath implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 
-		if ( Event.isPlayerActive(event.getEntity().getName()) ) {
+		if ( Event.isPlayerActive(event.getEntity().getUniqueId()) ) {
 
 			event.setDroppedExp(0);
 

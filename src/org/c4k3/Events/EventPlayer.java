@@ -1,6 +1,7 @@
 package org.c4k3.Events;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,6 +17,7 @@ import org.bukkit.scoreboard.Team;
  * teleport them back from the event as if nothing had happened. */
 public class EventPlayer {
 
+	private UUID uuid;
 	private String name;
 	private Location location;
 	private Integer foodLevel;
@@ -28,8 +30,9 @@ public class EventPlayer {
 	private GameMode playerGameMode;
 	private Boolean isQuitting;
 
-	public EventPlayer(String name, Location location, Integer foodLevel, Integer playerLevel, float playerXP, ItemStack[] armorContents, 
+	public EventPlayer(UUID uuid, String name, Location location, Integer foodLevel, Integer playerLevel, float playerXP, ItemStack[] armorContents, 
 			ItemStack[] inventoryContents, Double playerHealth, Collection<PotionEffect> potionEffects, GameMode playerGameMode, Boolean isQuitting) {
+		this.uuid = uuid;
 		this.name = name;
 		this.location = location;
 		this.foodLevel = foodLevel;
@@ -48,7 +51,7 @@ public class EventPlayer {
 	 * Effectively storing the data about the player for later retrieval.
 	 */
 	public void save() {
-		Event.saveEventPlayer(this.name, this);
+		Event.saveEventPlayer(this.uuid, this);
 	}
 
 	/**
@@ -56,7 +59,7 @@ public class EventPlayer {
 	 * For when the player is out of the event and so the info is no longer relevant.
 	 */
 	public void remove() {
-		Event.removeEventPlayer(this.name);
+		Event.removeEventPlayer(this.uuid);
 	}
 
 	/**

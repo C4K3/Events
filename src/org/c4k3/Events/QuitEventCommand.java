@@ -1,5 +1,8 @@
 package org.c4k3.Events;
 
+import java.util.UUID;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,14 +28,15 @@ public class QuitEventCommand implements CommandExecutor {
 			return true;
 		}
 
-		String sPlayer = player.getName();
+		UUID uuid = player.getUniqueId();
 
 		/* If player is not participating in the event */
-		if ( !Event.isPlayerActive(sPlayer) ) {
+		if ( !Event.isPlayerActive(uuid) ) {
+			player.sendMessage(ChatColor.RED + "You are not in any event. If you need help, try asking for an admin.");
 			return true;
 		}
 
-		EventPlayer eventPlayer = Event.getEventPlayer(sPlayer);
+		EventPlayer eventPlayer = Event.getEventPlayer(uuid);
 
 		eventPlayer.setIsQuitting(true);
 

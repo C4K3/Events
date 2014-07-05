@@ -1,6 +1,6 @@
 package org.c4k3.Events;
 
-import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -29,19 +29,34 @@ public class EventListCommand implements CommandExecutor {
 			return true;
 		}
 
-		Set<String> eventPlayers = Event.getActivePlayers();
+		/* String players is a list of all player's names in the events */
+		String players = "";
 
-		String message;
+		int playerAmount = 0;
+
+		for ( UUID uuid : Event.getActivePlayers()) {
+
+			players += Event.getEventPlayer(uuid).getName() + ", ";
+
+			playerAmount += 1;
+
+		}
+
+		/* Remove the final ", " */
+		if ( playerAmount > 0 ) players =  players.substring(0, players.length() - 2);
+
+		String message = null;
 
 		/* Only players should get the fancy colors, a console should just get a plain message. */
 		if ( player != null ) {
-			message = ChatColor.GOLD + "There are " + ChatColor.AQUA + eventPlayers.size() + ChatColor.GOLD +  " players currently in the events: " + ChatColor.AQUA;	
+			message = ChatColor.GOLD + "There are " + ChatColor.AQUA + playerAmount + ChatColor.GOLD +  " players currently in the events: " + ChatColor.AQUA;	
 		} else {
-			message = "There are " + eventPlayers.size() + " players currently in the events: ";
+			message = "There are " + playerAmount + " players currently in the events: ";
 		}
 
+
 		/* If there aren't any eventPlayers, don't post a blank empty line */
-		if ( eventPlayers.size() > 0 ) message += "\n" + eventPlayers;
+		if ( playerAmount > 0 ) message += "\n" + players;
 
 		if ( player != null ) player.sendMessage(message);
 		else Events.instance.getLogger().info(message);
