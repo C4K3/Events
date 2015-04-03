@@ -36,7 +36,7 @@ public class EventSetCommand implements CommandExecutor {
 		String sZ = null;
 		String sTeam = null;
 
-		for ( String arg : args ) {
+		for (String arg : args) {
 
 			if ( arg.toLowerCase().startsWith("world=") )
 				/* Sanity checking isn't really necessary here. Here we just store the data,

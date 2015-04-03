@@ -3,7 +3,6 @@ package org.c4k3.Events;
 import java.util.Collection;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -178,32 +177,22 @@ public class EventPlayer {
 
 		Events.instance.getLogger().info(player.getName());
 
-		/* We set what we can now. The rest we have to set later because it can't be set while the player is resurrecting */
 		player.getInventory().setArmorContents(armorContents);
 		player.getInventory().setContents(inventoryContents);
 		player.setGameMode(playerGameMode);
+		player.setFoodLevel(foodLevel);
+		player.setHealth(playerHealth);
+		player.addPotionEffects(potionEffects);
+		player.setLevel(playerLevel);
+		player.setExp(playerXP);
 
 		Events.instance.getLogger().info("Ported " + name + " home from events.");
 
 		player.sendMessage(ChatColor.AQUA + "Teleporting you home and returning your previous items.");
 
-		/* These have to be run with a delay after the player has respawned */
-		Runnable fixTask = new Runnable() {
-			@Override
-			public void run() {
-				player.setFoodLevel(foodLevel);
-				player.setHealth(playerHealth);
-				player.addPotionEffects(potionEffects);
-				player.setLevel(playerLevel);
-				player.setExp(playerXP);
-				Team team = player.getScoreboard().getPlayerTeam(player);
-				if ( team != null ) team.removePlayer(player);
-			}
-		};
+		Team team = player.getScoreboard().getPlayerTeam(player);
+		if ( team != null ) team.removePlayer(player);
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Events.instance, fixTask, 80L); // 5 second delay
-
-		/* finally, remove the EventPlayer object for this player */
 		this.remove();
 
 	}

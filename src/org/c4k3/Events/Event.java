@@ -37,7 +37,7 @@ public class Event {
 	 * Whether the event is complete.
 	 * 
 	 * As a general rule of thumb, this is true if there is a startLocation.
-	 * But if there are spawn locations etc. then they have to all be set for this to be true.
+	 * But if there are multiple spawn locations etc. then they have to all be set for this to be true.
 	 * @return If event is completely set.
 	 */
 	public static Boolean getIsComplete() {
