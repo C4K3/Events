@@ -3,6 +3,7 @@ package org.c4k3.Events;
 import java.util.Collection;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -185,6 +186,22 @@ public class EventPlayer {
 		player.addPotionEffects(potionEffects);
 		player.setLevel(playerLevel);
 		player.setExp(playerXP);
+
+		/* These have to be run with a delay after the player has respawned */
+		Runnable fixTask = new Runnable() {
+			@Override
+			public void run() {
+				player.setFoodLevel(foodLevel);
+				player.setHealth(playerHealth);
+				player.addPotionEffects(potionEffects);
+				player.setLevel(playerLevel);
+				player.setExp(playerXP);
+				Team team = player.getScoreboard().getPlayerTeam(player);
+				if ( team != null ) team.removePlayer(player);
+			}
+		};
+
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Events.instance, fixTask, 80L); // 5 second delay
 
 		Events.instance.getLogger().info("Ported " + name + " home from events.");
 
