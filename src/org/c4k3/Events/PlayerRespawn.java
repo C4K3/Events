@@ -36,10 +36,8 @@ public class PlayerRespawn implements Listener {
 
 		Team team = player.getScoreboard().getPlayerTeam(player);
 
-		if ( team != null ) {
-			Events.instance.getLogger().info("team is not null");
+		if (team != null)
 			teamSpawn = Event.getTeamSpawn(team.getName());
-		}
 
 		/* If isQuitting is true, or if the player is not in a team with a registered team spawn, then send player home */
 		if ( eventPlayer.getIsQuitting() || teamSpawn == null ) {
