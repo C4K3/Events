@@ -14,22 +14,16 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class PlayerDeath implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)
-	public void onPlayerDeath(PlayerDeathEvent event) {
+		public void onPlayerDeath(PlayerDeathEvent event) {
 
-		if ( Event.isPlayerActive(event.getEntity().getUniqueId()) ) {
+			if (Event.isPlayerActive(event.getEntity().getUniqueId()))
+				event.setDroppedExp(0);
 
-			event.setDroppedExp(0);
+			Player player = event.getEntity();
 
+			if (!player.isOp() && player.getGameMode() != GameMode.SURVIVAL)
+				player.setGameMode(GameMode.SURVIVAL);
 		}
-
-		Player player = event.getEntity();
-
-		if ( !player.isOp() && player.getGameMode() != GameMode.SURVIVAL ) {
-
-			player.setGameMode(GameMode.SURVIVAL);
-
-		}
-
-	}
 
 }
+

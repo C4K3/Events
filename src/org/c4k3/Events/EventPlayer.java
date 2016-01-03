@@ -197,7 +197,8 @@ public class EventPlayer {
 				player.setLevel(playerLevel);
 				player.setExp(playerXP);
 				Team team = player.getScoreboard().getPlayerTeam(player);
-				if ( team != null ) team.removePlayer(player);
+				if (team != null)
+					team.removePlayer(player);
 			}
 		};
 
@@ -208,10 +209,11 @@ public class EventPlayer {
 		player.sendMessage(ChatColor.AQUA + "Teleporting you home and returning your previous items.");
 
 		Team team = player.getScoreboard().getPlayerTeam(player);
-		if ( team != null ) team.removePlayer(player);
+		if (team != null)
+			team.removePlayer(player);
 
 		this.remove();
-
 	}
 
 }
+

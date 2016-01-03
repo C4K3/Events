@@ -24,25 +24,25 @@ public class EventCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		Player player = null;
-		if (sender instanceof Player){
+		if (sender instanceof Player) {
 			player = (Player) sender;
 		}
 
 		/* Command sender must be an ingame player */
-		if ( player == null ) {
+		if (player == null) {
 			Events.instance.getLogger().info("You must be a player to use this command.");
 			return true;
 		}
 
 		/* Event must be active */
-		if ( !Event.getIsActive() ) {
+		if (!Event.getIsActive()) {
 			player.sendMessage(ChatColor.RED + "Event is currently closed for new contestants.\n"
 					+ "Please wait until the next event starts.");
 			return true;
 		}
 
 		/* If the event is not setup yet */
-		if ( !Event.getIsComplete() ) {
+		if (!Event.getIsComplete()) {
 			sender.sendMessage(ChatColor.RED + "Woops. Looks like the event is set to active,\n" +
 					"but I'm missing some information about the event.\n" +
 					"Please tell the nice admin that they're missing something :)");
@@ -52,13 +52,14 @@ public class EventCommand implements CommandExecutor {
 		UUID uuid = player.getUniqueId();
 
 		/* Player is already in the event */
-		if ( Event.isPlayerActive(uuid) ) {
+		if (Event.isPlayerActive(uuid)) {
 			sender.sendMessage(ChatColor.RED + "You cannot join the same event twice.\n" +
 					"If you wish to quit the event, type /kill");
 			return true;
 		}
 
-		if ( player.isInsideVehicle() ) player.leaveVehicle();
+		if (player.isInsideVehicle())
+			player.leaveVehicle();
 
 		/* Everything seems to be in order. Saving all player info for when the event is over */
 		String sPlayer = player.getName();
@@ -79,14 +80,20 @@ public class EventCommand implements CommandExecutor {
 		/* Log it all, just in case */
 		String sArmorContents = "";
 
-		for ( ItemStack itemStack : armorContents) {
-			if ( itemStack.getType() != Material.AIR ) sArmorContents += " " + itemStack.getType().toString() + "." + itemStack.getEnchantments().toString();
+		for (ItemStack itemStack : armorContents) {
+			if (itemStack.getType() != Material.AIR)
+				sArmorContents += " " + itemStack.getType().toString()
+					+ "." + itemStack.getEnchantments().toString();
 		}
 
 		String sInventoryContents = "";
 
-		for ( ItemStack itemStack : inventoryContents) {
-			if ( itemStack != null ) sInventoryContents += " " + itemStack.getType().toString() + "." + itemStack.getAmount() + "." + itemStack.getDurability() + "." + itemStack.getEnchantments().toString();
+		for (ItemStack itemStack : inventoryContents) {
+			if (itemStack != null)
+				sInventoryContents += " " + itemStack.getType().toString()
+					+ "." + itemStack.getAmount()
+					+ "." + itemStack.getDurability()
+					+ "." + itemStack.getEnchantments().toString();
 		}
 
 		Events.instance.getLogger().info(sPlayer + " is participating in event: " + playerLevel + sArmorContents + sInventoryContents);
@@ -98,9 +105,8 @@ public class EventCommand implements CommandExecutor {
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(null);
 		player.setHealth(player.getMaxHealth());
-		for ( PotionEffect potionEffect : player.getActivePotionEffects() ) {
+		for (PotionEffect potionEffect : player.getActivePotionEffects())
 			player.removePotionEffect(potionEffect.getType());
-		}
 		player.setGameMode(GameMode.SURVIVAL);
 		player.teleport(Event.getStartLocation());
 
@@ -112,3 +118,4 @@ public class EventCommand implements CommandExecutor {
 	}
 
 }
+

@@ -14,21 +14,22 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerQuit implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled=true)
-	public void onPlayerDeath(PlayerQuitEvent event) {
-		
-		UUID uuid = event.getPlayer().getUniqueId();
-		
-		if ( !Event.isPlayerActive(uuid))
-			return;
-		
-		EventPlayer eventPlayer = Event.getEventPlayer(uuid);
-		
-		Player player = event.getPlayer();
-		
-		eventPlayer.sendHome(player);
-		
-		player.teleport(eventPlayer.getLocation());
-		
-	}
-	
+		public void onPlayerDeath(PlayerQuitEvent event) {
+
+			UUID uuid = event.getPlayer().getUniqueId();
+
+			if (!Event.isPlayerActive(uuid))
+				return;
+
+			EventPlayer eventPlayer = Event.getEventPlayer(uuid);
+
+			Player player = event.getPlayer();
+
+			eventPlayer.sendHome(player);
+
+			player.teleport(eventPlayer.getLocation());
+
+		}
+
 }
+

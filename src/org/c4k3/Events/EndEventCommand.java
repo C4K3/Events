@@ -19,25 +19,24 @@ public class EndEventCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		Player player = null;
-		if (sender instanceof Player){
+		if (sender instanceof Player) {
 			player = (Player) sender;
 		}
 
 		/* If non-op */
-		if ( player != null && !player.isOp() ) {
+		if (player != null && !player.isOp()) {
 			player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
 			return true;
 		}
 
-		for ( UUID uuid : Event.getActivePlayers() ) {
+		for (UUID uuid : Event.getActivePlayers()) {
 			Player tPlayer = Events.instance.getServer().getPlayer(uuid);
-
 			EventPlayer eventPlayer = Event.getEventPlayer(uuid);
-
 			eventPlayer.setIsQuitting(true);
 
 			/* We can't do this to offline players */
-			if ( tPlayer != null ) tPlayer.setHealth(0);
+			if (tPlayer != null)
+				tPlayer.setHealth(0);
 
 		}
 
@@ -45,7 +44,7 @@ public class EndEventCommand implements CommandExecutor {
 		Event.setIsActive(false);
 
 		return true;
-
 	}
 
 }
+

@@ -19,42 +19,34 @@ public class PlayerRespawn implements Listener {
 	private static EventPlayer eventPlayer;
 
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		public void onPlayerRespawn(PlayerRespawnEvent event) {
 
-		UUID uuid = event.getPlayer().getUniqueId();
+			UUID uuid = event.getPlayer().getUniqueId();
 
-		/* If player is not participating in the event */
-		if ( !Event.isPlayerActive(uuid) ) {
-			return;
-		}
+			/* If player is not participating in the event */
+			if (!Event.isPlayerActive(uuid))
+				return;
 
-		eventPlayer = Event.getEventPlayer(uuid);
+			eventPlayer = Event.getEventPlayer(uuid);
+			Player player = event.getPlayer();
+			Location teamSpawn = null;
+			Team team = player.getScoreboard().getPlayerTeam(player);
 
-		Player player = event.getPlayer();
+			if (team != null)
+				teamSpawn = Event.getTeamSpawn(team.getName());
 
-		Location teamSpawn = null;
-
-		Team team = player.getScoreboard().getPlayerTeam(player);
-
-		if (team != null)
-			teamSpawn = Event.getTeamSpawn(team.getName());
-
-		/* If isQuitting is true, or if the player is not in a team with a registered team spawn, then send player home */
-		if ( eventPlayer.getIsQuitting() || teamSpawn == null ) {
-
-			event.setRespawnLocation(eventPlayer.getLocation());
-
-			eventPlayer.sendHome(player);
-
-		} else {
-			/* else we send the player to their team's spawn location */
-			event.setRespawnLocation(teamSpawn);
-
-			player.sendMessage(ChatColor.AQUA + "Respawning at your team's spawn."
-					+ "\nTo leave the event, type " + ChatColor.GOLD + "/quitevent");
+			/* If isQuitting is true, or if the player is not in a team with a registered team spawn, then send player home */
+			if (eventPlayer.getIsQuitting() || teamSpawn == null) {
+				event.setRespawnLocation(eventPlayer.getLocation());
+				eventPlayer.sendHome(player);
+			} else {
+				/* else we send the player to their team's spawn location */
+				event.setRespawnLocation(teamSpawn);
+				player.sendMessage(ChatColor.AQUA + "Respawning at your team's spawn."
+						+ "\nTo leave the event, type " + ChatColor.GOLD + "/quitevent");
+			}
 
 		}
-
-	}
 
 }
+

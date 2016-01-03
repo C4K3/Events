@@ -24,7 +24,7 @@ public class EventListCommand implements CommandExecutor {
 		}
 
 		/* If sender is not an admin */
-		if ( player != null && !player.isOp() ) {
+		if (player != null && !player.isOp()) {
 			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
 			return true;
 		}
@@ -34,21 +34,19 @@ public class EventListCommand implements CommandExecutor {
 
 		int playerAmount = 0;
 
-		for ( UUID uuid : Event.getActivePlayers()) {
-
+		for (UUID uuid : Event.getActivePlayers()) {
 			players += Event.getEventPlayer(uuid).getName() + ", ";
-
 			playerAmount += 1;
-
 		}
 
 		/* Remove the final ", " */
-		if ( playerAmount > 0 ) players =  players.substring(0, players.length() - 2);
+		if (playerAmount > 0)
+			players = players.substring(0, players.length() - 2);
 
 		String message = null;
 
 		/* Only players should get the fancy colors, a console should just get a plain message. */
-		if ( player != null ) {
+		if (player != null) {
 			message = ChatColor.GOLD + "There are " + ChatColor.AQUA + playerAmount + ChatColor.GOLD +  " players currently in the events: " + ChatColor.AQUA;	
 		} else {
 			message = "There are " + playerAmount + " players currently in the events: ";
@@ -56,13 +54,16 @@ public class EventListCommand implements CommandExecutor {
 
 
 		/* If there aren't any eventPlayers, don't post a blank empty line */
-		if ( playerAmount > 0 ) message += "\n" + players;
+		if (playerAmount > 0)
+			message += "\n" + players;
 
-		if ( player != null ) player.sendMessage(message);
-		else Events.instance.getLogger().info(message);
+		if (player != null) {
+			player.sendMessage(message);
+		} else {
+			Events.instance.getLogger().info(message);
+		}
 
 		return true;
-
 	}
-
 }
+
