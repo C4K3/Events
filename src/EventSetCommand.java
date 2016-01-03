@@ -73,9 +73,8 @@ public class EventSetCommand implements CommandExecutor {
 		Location location = new Location(null, 0, 0, 0);
 
 		/* If any of the location arguments have been passed, we try to create a Bukkit.Location out of them */
-		if ( sWorld != null || sX != null || sY != null || sZ != null ) {
+		if (sWorld != null || sX != null || sY != null || sZ != null) {
 			try {
-
 				World world = Events.instance.getServer().getWorld(sWorld);
 
 				Block block = world.getBlockAt(Integer.parseInt(sX), Integer.parseInt(sY), Integer.parseInt(sZ) );
