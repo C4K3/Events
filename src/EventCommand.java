@@ -78,25 +78,34 @@ public class EventCommand implements CommandExecutor {
 		eventPlayer.save();
 
 		/* Log it all, just in case */
-		String sArmorContents = "";
-
-		for (ItemStack itemStack : armorContents) {
-			if (itemStack.getType() != Material.AIR)
-				sArmorContents += " " + itemStack.getType().toString()
-					+ "." + itemStack.getEnchantments().toString();
-		}
-
 		String sInventoryContents = "";
 
-		for (ItemStack itemStack : inventoryContents) {
-			if (itemStack != null)
-				sInventoryContents += " " + itemStack.getType().toString()
-					+ "." + itemStack.getAmount()
-					+ "." + itemStack.getDurability()
-					+ "." + itemStack.getEnchantments().toString();
+		for (ItemStack itemStack : armorContents) {
+			if (itemStack.getType() == Material.AIR)
+				continue;
+
+			String tmp = itemStack.getType().toString()
+				+ "." + itemStack.getAmount()
+				+ "." + itemStack.getDurability()
+				+ "." + itemStack.getEnchantments().toString();
+			tmp.replaceAll(" ", "");
+			sInventoryContents += " " + tmp;
 		}
 
-		Events.instance.getLogger().info(sPlayer + " is participating in event: " + playerLevel + sArmorContents + sInventoryContents);
+
+		for (ItemStack itemStack : inventoryContents) {
+			if (itemStack == null)
+				continue;
+
+			String tmp = itemStack.getType().toString()
+				+ "." + itemStack.getAmount()
+				+ "." + itemStack.getDurability()
+				+ "." + itemStack.getEnchantments().toString();
+			tmp = tmp.replaceAll(" ", "");
+			sInventoryContents += " " + tmp;
+		}
+
+		Events.instance.getLogger().info(sPlayer + " is participating in event: " + playerLevel + sInventoryContents);
 
 		/* Now we reset all their stuff and teleport them off */
 		player.setFoodLevel(20);
