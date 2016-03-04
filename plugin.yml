@@ -17,3 +17,5 @@ commands:
     description: Leave the event you're currently in.
   endevent:
     description: Let's admins end the event for all players
+  eventrestore:
+    description: Restores lost items

@@ -22,6 +22,7 @@ public class Events extends JavaPlugin implements Listener {
 		getCommand("eventset").setExecutor(new EventSetCommand());
 		getCommand("quitevent").setExecutor(new QuitEventCommand());
 		getCommand("endevent").setExecutor(new EndEventCommand());
+		getCommand("eventrestore").setExecutor(new EventRestoreCommand());
 	}
 
 	@Override
