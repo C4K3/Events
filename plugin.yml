@@ -1,6 +1,6 @@
 name: Events
 main: org.c4k3.Events.Events
-version: 2.1
+version: 2.2
 author: C4K3.net
 website: https://github.com/C4K3/Events
 description: Lets admins setup a teleport point, and then allow players to teleport to it
