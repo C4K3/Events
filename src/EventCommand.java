@@ -80,19 +80,6 @@ public class EventCommand implements CommandExecutor {
 		/* Log it all, just in case */
 		String sInventoryContents = "";
 
-		for (ItemStack itemStack : armorContents) {
-			if (itemStack.getType() == Material.AIR)
-				continue;
-
-			String tmp = itemStack.getType().toString()
-				+ "." + itemStack.getAmount()
-				+ "." + itemStack.getDurability()
-				+ "." + itemStack.getEnchantments().toString();
-			tmp.replaceAll(" ", "");
-			sInventoryContents += " " + tmp;
-		}
-
-
 		for (ItemStack itemStack : inventoryContents) {
 			if (itemStack == null)
 				continue;
