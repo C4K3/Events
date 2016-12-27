@@ -1,4 +1,4 @@
-package org.c4k3.Events;
+package net.simpvp.Events;
 
 import java.util.HashMap;
 import java.util.Set;

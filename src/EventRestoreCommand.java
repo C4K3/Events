@@ -1,4 +1,4 @@
-package org.c4k3.Events;
+package net.simpvp.Events;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

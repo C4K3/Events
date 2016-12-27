@@ -1,4 +1,4 @@
-package org.c4k3.Events;
+package net.simpvp.Events;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;

@@ -1,5 +1,5 @@
 name: Events
-main: org.c4k3.Events.Events
+main: net.simpvp.Events.Events
 version: 2.2
 author: C4K3.net
 website: https://github.com/C4K3/Events
