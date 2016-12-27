@@ -23,12 +23,6 @@ public class EventListCommand implements CommandExecutor {
 			player = (Player) sender;
 		}
 
-		/* If sender is not an admin */
-		if (player != null && !player.isOp()) {
-			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
-			return true;
-		}
-
 		/* String players is a list of all player's names in the events */
 		String players = "";
 
