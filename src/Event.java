@@ -11,8 +11,8 @@ import org.bukkit.Location;
  */
 public class Event {
 
-	private static Boolean isActive = new Boolean("false");
-	private static Boolean isComplete = new Boolean("false");
+	private static Boolean isActive = false;
+	private static Boolean isComplete = false;
 	private static Location startLocation;
 	private static HashMap<UUID, EventPlayer> eventPlayers = new HashMap<UUID, EventPlayer>();
 	private static HashMap<String, Location> teamSpawns = new HashMap<String, Location>();
