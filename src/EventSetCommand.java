@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -60,9 +61,12 @@ public class EventSetCommand implements CommandExecutor {
 					+ "\nThe correct syntax is: /eventset [x=] [y=] [z=] [world=] [team=]"
 					+ "\nExample: /eventset x=26 y=75 z=-154 world=events";
 				if (player == null) {
-					Events.instance.getLogger().info(message);
+					sender.sendMessage(message);
 				} else {
 					player.sendMessage(ChatColor.RED + message);
+				}
+				if (!(sender instanceof ConsoleCommandSender)) {
+					Events.instance.getLogger().info("Error parsing eventset args: " + message);
 				}
 
 				return true;
@@ -101,8 +105,12 @@ public class EventSetCommand implements CommandExecutor {
 				location = player.getLocation();
 				/* But if the sending player is console, they have no location */
 			} else {
-				Events.instance.getLogger().info("As console you must set a custom location with /eventset\n"
-						+ "Proper syntax is /eventset [x=<x>] [y=<y>] [z=<z>] [world=<world>]");
+				String message = "As a non-player you must set a custom location with /eventset\n"
+						+ "Proper syntax is /eventset [x=<x>] [y=<y>] [z=<z>] [world=<world>]";
+				sender.sendMessage(message);
+				if (!(sender instanceof ConsoleCommandSender)) {
+					Events.instance.getLogger().info("Eventset error: " + message);
+				}
 				return true;
 			}
 
@@ -118,9 +126,12 @@ public class EventSetCommand implements CommandExecutor {
 				String message = "No such scoreboard team. Type /scoreboard teams list"
 					+ "\nfor a list of scoreboard teams.";
 				if (player == null) {
-					Events.instance.getLogger().info(message);
+					sender.sendMessage(message);
 				} else {
 					player.sendMessage(ChatColor.RED + message);
+				}
+				if (!(sender instanceof ConsoleCommandSender)) {
+					Events.instance.getLogger().info("eventset error: " + message);
 				}
 				return true;
 			}
@@ -129,9 +140,12 @@ public class EventSetCommand implements CommandExecutor {
 
 			String message = "Location of " + sTeam + " team's spawn location has been set.";
 			if (player == null) {
-				Events.instance.getLogger().info(message);
+				sender.sendMessage(message);
 			} else {
 				player.sendMessage(ChatColor.AQUA + message);
+			}
+			if (!(sender instanceof ConsoleCommandSender)) {
+				Events.instance.getLogger().info("Eventset: " + message);
 			}
 
 			/* The given location is the event's start location */
@@ -140,9 +154,12 @@ public class EventSetCommand implements CommandExecutor {
 			Event.setIsComplete(true);
 			String message = "The event spawn has been set to the specified location.";
 			if (player == null) {
-				Events.instance.getLogger().info(message);
+				sender.sendMessage(message);
 			} else {
 				player.sendMessage(ChatColor.AQUA + message);
+			}
+			if (!(sender instanceof ConsoleCommandSender)) {
+				Events.instance.getLogger().info("Eventset: " + message);
 			}
 		}
 
