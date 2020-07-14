@@ -157,12 +157,14 @@ public class EventSetCommand implements CommandExecutor {
 					relative = true;
 				}
 				Integer y = null;
-				try {
-					y = Integer.parseInt(sY);
-				} catch (Exception e) {
-					String msg = "Invalid y coordinate '" + sY + "': " + e;
-					error_log(msg, sender);
-					return true;
+				if (!sY.isEmpty()) {
+					try {
+						y = Integer.parseInt(sY);
+					} catch (Exception e) {
+						String msg = "Invalid y coordinate '" + sY + "': " + e;
+						error_log(msg, sender);
+						return true;
+					}
 				}
 
 				if (relative) {
@@ -195,12 +197,14 @@ public class EventSetCommand implements CommandExecutor {
 					relative = true;
 				}
 				Integer z = null;
-				try {
-					z = Integer.parseInt(sZ);
-				} catch (Exception e) {
-					String msg = "Invalid z coordinate '" + sZ + "': " + e;
-					error_log(msg, sender);
-					return true;
+				if (!sZ.isEmpty()) {
+					try {
+						z = Integer.parseInt(sZ);
+					} catch (Exception e) {
+						String msg = "Invalid z coordinate '" + sZ + "': " + e;
+						error_log(msg, sender);
+						return true;
+					}
 				}
 
 				if (relative) {
