@@ -24,11 +24,11 @@ public class PlayerDeath implements Listener {
 		 * for later retrieval
 		 */
 		
-		boolean keepInv = Event.getKeepMyInventory();
+		
 		if (Event.isPlayerActive(event.getEntity().getUniqueId())) {
 			event.setDroppedExp(0);
 		
- 		if (keepInv == true) {
+ 		if (Event.getKeepMyInventory) {
  			ItemStack[] content = event.getEntity().getInventory().getContents();
  			PlayerRespawn.items.put(event.getEntity(), content);
  			event.getEntity().getInventory().clear();
