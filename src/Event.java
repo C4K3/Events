@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * This class stores data about the current event.
@@ -16,6 +18,8 @@ public class Event {
 	private static Location startLocation;
 	private static HashMap<UUID, EventPlayer> eventPlayers = new HashMap<UUID, EventPlayer>();
 	private static HashMap<String, Location> teamSpawns = new HashMap<String, Location>();
+	private static Boolean keepMyInventory = false;
+	
 
 	/**
 	 * Gets whether the event is active or not.
@@ -140,5 +144,21 @@ public class Event {
 		teamSpawns.clear();
 	}
 
+	/**
+	 * Get the keepMyInventory variable
+	 */
+	
+	public static Boolean getKeepMyInventory() {
+		return keepMyInventory;
+	}
+
+	/**
+	 * Set the keepMyInventory variable
+	 */
+	
+	public static void setKeepMyInventory(Boolean keepMyInventory) {
+		Event.keepMyInventory = keepMyInventory;
+	}
 }
+
 
