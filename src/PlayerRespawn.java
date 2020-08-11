@@ -1,6 +1,7 @@
 package net.simpvp.Events;
 
 import java.util.UUID;
+import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,17 +11,20 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.inventory.ItemStack;
 
 /** Monitors people respawning
  * If somebody participating in the event respawns, it teleports them home
  * and gives them back previous items and health, etc */
 public class PlayerRespawn implements Listener {
 
+	static public HashMap<Player , ItemStack[]> items = new HashMap<Player , ItemStack[]>();
 	private static EventPlayer eventPlayer;
 
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
-
+		
+		boolean keepInv = Event.getKeepMyInventory();
 		UUID uuid = event.getPlayer().getUniqueId();
 
 		/* If player is not participating in the event */
@@ -44,9 +48,21 @@ public class PlayerRespawn implements Listener {
 			event.setRespawnLocation(teamSpawn);
 			player.sendMessage(ChatColor.AQUA + "Respawning at your team's spawn."
 					+ "\nTo leave the event, type " + ChatColor.GOLD + "/quitevent");
+			/* If keepInv is true then their inventory will be set to the contents*/
+			if (keepInv == true) {
+				
+				if(items.containsKey(player)){
+					player.getInventory().clear();
+					ItemStack[] myItems = items.get(player);
+					player.getInventory().setContents(myItems);
+						
+	            }
+					
+					items.remove(player);
+						
+				}
+			}
 		}
-
 	}
 
-}
 
