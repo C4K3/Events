@@ -234,6 +234,22 @@ public class EventSetCommand implements CommandExecutor {
 					return true;
 				}
 
+			} else if (arg.toLowerCase().startsWith("keepinventory=")) {
+				
+				boolean keepMyInventory = Event.getKeepMyInventory();
+				String sKeepInventory = arg.substring(14);
+				if (sKeepInventory.toLowerCase().startsWith("true")) {
+					keepMyInventory = true;
+					Event.setKeepMyInventory(keepMyInventory);
+				} else if (sKeepInventory.toLowerCase().startsWith("false")) {
+					keepMyInventory = false;
+					Event.setKeepMyInventory(keepMyInventory);
+				}
+				
+				
+				
+				
+				
 			} else {
 				/* An invalid argument was passed. */
 				String message = "You tried to use an invalid argument with /eventset."
@@ -298,4 +314,3 @@ public class EventSetCommand implements CommandExecutor {
 		}
 	}
 }
-
