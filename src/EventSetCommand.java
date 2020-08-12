@@ -66,6 +66,12 @@ public class EventSetCommand implements CommandExecutor {
 			existing_location = true;
 		}
 
+		
+		boolean keepMyInventory = false;
+		Event.setKeepMyInventory(keepMyInventory);
+		
+		
+		
 		for (String arg : args) {
 
 			if (arg.toLowerCase().startsWith("world=")) {
@@ -236,12 +242,15 @@ public class EventSetCommand implements CommandExecutor {
 
 			} else if (arg.toLowerCase().startsWith("keepinventory=")) {
 				
-				boolean keepMyInventory = Event.getKeepMyInventory();
+				keepMyInventory = Event.getKeepMyInventory();
 				String sKeepInventory = arg.substring(14);
 				if (sKeepInventory.toLowerCase().equalsIgnoreCase("true")) {
 					keepMyInventory = true;
 					Event.setKeepMyInventory(keepMyInventory);
 				} else if (sKeepInventory.toLowerCase().equalsIgnoreCase("false")) {
+					keepMyInventory = false;
+					Event.setKeepMyInventory(keepMyInventory);
+				} else {
 					keepMyInventory = false;
 					Event.setKeepMyInventory(keepMyInventory);
 				}
@@ -314,3 +323,4 @@ public class EventSetCommand implements CommandExecutor {
 		}
 	}
 }
+
