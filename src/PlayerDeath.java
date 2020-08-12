@@ -1,6 +1,7 @@
 package net.simpvp.Events;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -19,20 +20,22 @@ public class PlayerDeath implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		
+		UUID uuid = event.getEntity().getUniqueId();
+		
 		/** If player is in the event and if keepInv is true
 		 * then item drops are disabled and their inventory is saved
 		 * for later retrieval
 		 */
 		
-		
+		boolean keepInv = Event.getKeepMyInventory();
 		if (Event.isPlayerActive(event.getEntity().getUniqueId())) {
 			event.setDroppedExp(0);
 		
- 		if (Event.getKeepMyInventory) {
- 			ItemStack[] content = event.getEntity().getInventory().getContents();
- 			PlayerRespawn.items.put(event.getEntity(), content);
- 			event.getEntity().getInventory().clear();
- 			event.getDrops().clear();
+			if (keepInv == true) {
+				ItemStack[] content = event.getEntity().getInventory().getContents();
+				PlayerRespawn.items.put(uuid, content);
+				event.getEntity().getInventory().clear();
+				event.getDrops().clear();
 
  			}
  	
@@ -43,5 +46,3 @@ public class PlayerDeath implements Listener {
 		}
 	}
 }
-
-
