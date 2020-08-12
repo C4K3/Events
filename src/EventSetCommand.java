@@ -238,10 +238,10 @@ public class EventSetCommand implements CommandExecutor {
 				
 				boolean keepMyInventory = Event.getKeepMyInventory();
 				String sKeepInventory = arg.substring(14);
-				if (sKeepInventory.toLowerCase().startsWith("true")) {
+				if (sKeepInventory.toLowerCase().equalsIgnoreCase("true")) {
 					keepMyInventory = true;
 					Event.setKeepMyInventory(keepMyInventory);
-				} else if (sKeepInventory.toLowerCase().startsWith("false")) {
+				} else if (sKeepInventory.toLowerCase().equalsIgnoreCase("false")) {
 					keepMyInventory = false;
 					Event.setKeepMyInventory(keepMyInventory);
 				}
