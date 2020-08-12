@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
  * and gives them back previous items and health, etc */
 public class PlayerRespawn implements Listener {
 
-	static public HashMap<UUID , ItemStack[]> items = new HashMap<UUID , ItemStack[]>();
 	private static EventPlayer eventPlayer;
 
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)
@@ -46,22 +45,12 @@ public class PlayerRespawn implements Listener {
 			/* else we send the player to their team's spawn location */
 			event.setRespawnLocation(teamSpawn);
 			player.sendMessage(ChatColor.AQUA + "Respawning at your team's spawn."
-					+ "\nTo leave the event, type " + ChatColor.GOLD + "/quitevent");
-			/* If keepInv is true then their inventory will be set to the contents*/
-			
-			if (Event.getKeepMyInventory() == true) {
-				
-				if(items.containsKey(uuid)){
-					player.getInventory().clear();
-					ItemStack[] myItems = items.get(uuid);
-					player.getInventory().setContents(myItems);
-						
-	            }
-					
-					items.remove(uuid);
-						
-				}
+					+ "\nTo leave the event, type " + ChatColor.GOLD + "/quitevent");		
+	            		}		
 			}
 		}
-	}
+	
+	
+	
+
 
