@@ -32,9 +32,7 @@ public class PlayerDeath implements Listener {
 			event.setDroppedExp(0);
 		
 			if (keepInv == true) {
-				ItemStack[] content = event.getEntity().getInventory().getContents();
-				PlayerRespawn.items.put(uuid, content);
-				event.getEntity().getInventory().clear();
+				event.setKeepInventory(true);
 				event.getDrops().clear();
 
  			}
@@ -46,3 +44,4 @@ public class PlayerDeath implements Listener {
 		}
 	}
 }
+
