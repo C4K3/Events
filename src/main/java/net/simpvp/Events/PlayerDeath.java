@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /** Class is responsible for listening to player deaths
  * and making sure no xp is dropped in the events
@@ -15,15 +16,25 @@ public class PlayerDeath implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL,ignoreCancelled=true)
 	public void onPlayerDeath(PlayerDeathEvent event) {
-
-		if (Event.isPlayerActive(event.getEntity().getUniqueId()))
-			event.setDroppedExp(0);
-
 		Player player = event.getEntity();
 
-		if (!player.isOp() && player.getGameMode() != GameMode.SURVIVAL)
+		if (!player.isOp() && player.getGameMode() != GameMode.SURVIVAL) {
 			player.setGameMode(GameMode.SURVIVAL);
+		}
+
+		if (!Event.isPlayerActive(player.getUniqueId())) {
+			return;
+		}
+
+		event.setDroppedExp(0);
+
+		// It doesn't seem to like it if we just call respawn before this
+		// event has finished processing, so schedule it to run as a task ASAP.
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				player.spigot().respawn();
+			}
+		}.runTaskLater(Events.instance, 0);
 	}
-
 }
-
