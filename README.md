@@ -35,10 +35,8 @@ If team is set, then the location is used as the spawn location of the assigned 
 
 Compiling
 -----
-Requires a Java JDK, *make*, and a bukkit jar.
-
-To compile, run `make` in the directory. To specify the bukkit jar and/or java version, run it as
+Compile using maven:
 ```
-make BUKKIT=/path/to/bukkit.jar JAVA=1.7
+mvn clean package
 ```
-
+and the plugin will be in `target/Events.jar`.
