@@ -16,6 +16,7 @@ public class Event {
 	private static Location startLocation;
 	private static HashMap<UUID, EventPlayer> eventPlayers = new HashMap<UUID, EventPlayer>();
 	private static HashMap<String, Location> teamSpawns = new HashMap<String, Location>();
+	private static Boolean keepMyInventory = false;
 
 	/**
 	 * Gets whether the event is active or not.
@@ -139,6 +140,19 @@ public class Event {
 	public static void clearTeamSpawns() {
 		teamSpawns.clear();
 	}
+	
+	public static Boolean getKeepMyInventory() {
+		return keepMyInventory;
+	}
+
+	/**
+	 * Set the keepMyInventory variable
+	 */
+
+	public static void setKeepMyInventory(Boolean keepMyInventory) {
+		Event.keepMyInventory = keepMyInventory;
+	}
+	
 
 }
 
