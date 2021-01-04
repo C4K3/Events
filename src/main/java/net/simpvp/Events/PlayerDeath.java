@@ -21,12 +21,18 @@ public class PlayerDeath implements Listener {
 		if (!player.isOp() && player.getGameMode() != GameMode.SURVIVAL) {
 			player.setGameMode(GameMode.SURVIVAL);
 		}
-
+		
 		if (!Event.isPlayerActive(player.getUniqueId())) {
 			return;
 		}
 
 		event.setDroppedExp(0);
+		
+		if (Event.getKeepMyInventory() == true) {
+			event.setKeepInventory(true);
+			event.getDrops().clear();
+
+		}
 
 		// It doesn't seem to like it if we just call respawn before this
 		// event has finished processing, so schedule it to run as a task ASAP.
