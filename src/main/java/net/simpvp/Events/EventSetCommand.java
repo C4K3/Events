@@ -252,8 +252,8 @@ public class EventSetCommand implements CommandExecutor {
 						Event.setKeepMyInventory(keepMyInventory);
 					
 					} else {
-						keepMyInventory = false;
-						Event.setKeepMyInventory(keepMyInventory);
+						String message = "Unknown argument: " + sKeepInventory;
+						error_log(message, sender);
 					}
 			
 			
