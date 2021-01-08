@@ -21,15 +21,18 @@ public class PlayerDeath implements Listener {
 		if (!player.isOp() && player.getGameMode() != GameMode.SURVIVAL) {
 			player.setGameMode(GameMode.SURVIVAL);
 		}
-		
-		if (!Event.isPlayerActive(player.getUniqueId())) {
+
+		EventPlayer eplayer = Event.getEventPlayer(player.getUniqueId());
+		if (eplayer == null) {
 			return;
 		}
 
 		event.setDroppedExp(0);
-		
+
 		if (Event.getKeepMyInventory() == true) {
-			event.setKeepInventory(true);
+			if (!eplayer.getIsQuitting()) {
+				event.setKeepInventory(true);
+			}
 			event.getDrops().clear();
 
 		}

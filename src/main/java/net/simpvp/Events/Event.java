@@ -140,7 +140,7 @@ public class Event {
 	public static void clearTeamSpawns() {
 		teamSpawns.clear();
 	}
-	
+
 	public static Boolean getKeepMyInventory() {
 		return keepMyInventory;
 	}
@@ -152,7 +152,7 @@ public class Event {
 	public static void setKeepMyInventory(Boolean keepMyInventory) {
 		Event.keepMyInventory = keepMyInventory;
 	}
-	
+
 
 }
 

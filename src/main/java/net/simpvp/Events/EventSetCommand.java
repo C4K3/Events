@@ -238,27 +238,18 @@ public class EventSetCommand implements CommandExecutor {
 				}
 
 			} else if (arg.toLowerCase().startsWith("keepinventory=")) {
-
-
 					String sKeepInventory = arg.substring(14);
 					if (sKeepInventory.toLowerCase().equalsIgnoreCase("true")) {
-	 
-
 						keepMyInventory = true;
 						Event.setKeepMyInventory(keepMyInventory);
-					
 					} else if (sKeepInventory.toLowerCase().equalsIgnoreCase("false")) {
 						keepMyInventory = false;
 						Event.setKeepMyInventory(keepMyInventory);
-					
 					} else {
-						String message = "Unknown argument: " + sKeepInventory;
+						String message = String.format("Unknown keepinventory value '%s', must be true/false");
 						error_log(message, sender);
+						return true;
 					}
-			
-			
-			
-			
 			} else {
 				/* An invalid argument was passed. */
 				String message = "You tried to use an invalid argument with /eventset."

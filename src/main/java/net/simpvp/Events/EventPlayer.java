@@ -30,7 +30,7 @@ public class EventPlayer {
 	private GameMode playerGameMode;
 	private Boolean isQuitting;
 
-	public EventPlayer(UUID uuid, String name, Location location, Integer foodLevel, Integer playerLevel, float playerXP, ItemStack[] armorContents, 
+	public EventPlayer(UUID uuid, String name, Location location, Integer foodLevel, Integer playerLevel, float playerXP, ItemStack[] armorContents,
 			ItemStack[] inventoryContents, Double playerHealth, Collection<PotionEffect> potionEffects, GameMode playerGameMode, Boolean isQuitting) {
 		this.uuid = uuid;
 		this.name = name;
@@ -145,7 +145,7 @@ public class EventPlayer {
 
 	/**
 	 * Get whether the player will be quitting on this death.
-	 * 
+	 *
 	 * On events where players respawn, this will be false until they shouldn't respawn anymore.
 	 * On events without respawning, this will always be true.
 	 * @return whether player is quitting event.
@@ -164,10 +164,10 @@ public class EventPlayer {
 
 	/**
 	 *  Sends the player home from the events.
-	 *  
+	 *
 	 *  This method should be called when the player in the PlayerRespawnEvent is to be sent home,
 	 *  and when they manually decide they want to quit the event.
-	 * 
+	 *
 	 *  Takes a Player object for the player (we can't store that in EventPlayers)
 	 *  And whether to teleport the player.
 	 *  If the player is dead, then we don't want to teleport them,
