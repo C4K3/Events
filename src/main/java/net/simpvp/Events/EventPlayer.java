@@ -202,7 +202,9 @@ public class EventPlayer {
 			}
 		};
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Events.instance, fixTask, 80L); // 5 second delay
+		if (Events.enabled) {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Events.instance, fixTask, 80L); // 5 second delay
+		}
 
 		Events.instance.getLogger().info("Ported " + name + " home from events.");
 
