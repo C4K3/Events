@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 /**
  * This class handles the /quitevent command
- * 
+ *
  * Let's players leave the event anytime.
  */
 public class QuitEventCommand implements CommandExecutor {
@@ -22,28 +22,41 @@ public class QuitEventCommand implements CommandExecutor {
 			player = (Player) sender;
 		}
 
-		/* If not a player */
-		if (player == null) {
-			Events.instance.getLogger().info("You must be a player to use this command.");
+		Player quitter = null;
+
+		if (player != null) {
+			UUID uuid = player.getUniqueId();
+
+			if (Event.isPlayerActive(uuid)) {
+				quitter = player;
+			} else if (!player.isOp() || args.length == 0) {
+				player.sendMessage(ChatColor.RED + "You are not in any event. If you need help, try asking for an admin.");
+				return true;
+			}
+		}
+
+		if (quitter == null) {
+			if (args.length < 1) {
+				sender.sendMessage("You are not in any event. To kick somebody from the event, do /quitevent <player>");
+				return true;
+			}
+
+			quitter = Events.instance.getServer().getPlayer(args[0]);
+			if (quitter == null) {
+				sender.sendMessage("No such player found: " + args[0]);
+				return true;
+			}
+		}
+
+		if (!Event.isPlayerActive(quitter.getUniqueId())) {
+			sender.sendMessage(String.format("Target player %s is not in an event", quitter.getName()));
 			return true;
 		}
 
-		UUID uuid = player.getUniqueId();
-
-		/* If player is not participating in the event */
-		if (!Event.isPlayerActive(uuid)) {
-			player.sendMessage(ChatColor.RED + "You are not in any event. If you need help, try asking for an admin.");
-			return true;
-		}
-
-		EventPlayer eventPlayer = Event.getEventPlayer(uuid);
-
-		eventPlayer.setIsQuitting(true);
-
-		player.setHealth(0);
+		EventPlayer event_quitter = Event.getEventPlayer(quitter.getUniqueId());
+		event_quitter.setIsQuitting(true);
+		quitter.setHealth(0);
 
 		return true;
 	}
-
 }
-
