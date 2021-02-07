@@ -58,8 +58,15 @@ public class EventCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (player.isInsideVehicle())
-			player.leaveVehicle();
+		if (player.isInsideVehicle()) {
+			sender.sendMessage(ChatColor.RED + "You cannot join events while in a vehicle.");
+			return true;
+		}
+
+		if (player.getLocation().getX() < 0.0) {
+			sender.sendMessage(ChatColor.RED + "You cannot join events from your current location.");
+			return true;
+		}
 
 		/* Everything seems to be in order. Saving all player info for when the event is over */
 		String sPlayer = player.getName();
@@ -114,4 +121,3 @@ public class EventCommand implements CommandExecutor {
 	}
 
 }
-
