@@ -68,6 +68,10 @@ public class EventCommand implements CommandExecutor {
 			return true;
 		}
 
+		if (player.isOp()) {
+			player.performCommand("rg bypass off");
+		}
+
 		/* Everything seems to be in order. Saving all player info for when the event is over */
 		String sPlayer = player.getName();
 		Location playerLocation = player.getLocation();
