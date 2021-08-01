@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scoreboard.Team;
 
 /** This class is responsible for handling the /event command.
  * 
@@ -49,15 +50,6 @@ public class EventCommand implements CommandExecutor {
 			return true;
 		}
 
-		UUID uuid = player.getUniqueId();
-
-		/* Player is already in the event */
-		if (Event.isPlayerActive(uuid)) {
-			sender.sendMessage(ChatColor.RED + "You cannot join the same event twice.\n" +
-					"If you wish to quit the event, type /kill");
-			return true;
-		}
-
 		if (player.isInsideVehicle()) {
 			sender.sendMessage(ChatColor.RED + "You cannot join events while in a vehicle.");
 			return true;
@@ -72,7 +64,37 @@ public class EventCommand implements CommandExecutor {
 			player.performCommand("rg bypass off");
 		}
 
+		UUID uuid = player.getUniqueId();
 		/* Everything seems to be in order. Saving all player info for when the event is over */
+		if (!Event.isPlayerActive(uuid)) {
+			save_player_data(player);
+		}
+
+		/* Now we reset all their stuff and teleport them off */
+		player.setFoodLevel(20);
+		player.setLevel(0);
+		player.setExp(0);
+		player.getInventory().clear();
+		player.getInventory().setArmorContents(null);
+		player.setHealth(player.getMaxHealth());
+		for (PotionEffect potionEffect : player.getActivePotionEffects())
+			player.removePotionEffect(potionEffect.getType());
+		player.setGameMode(GameMode.SURVIVAL);
+		player.teleport(Event.getStartLocation());
+		/* Leave current team. Doesn't save it, but maybe it should? */
+		Team team = player.getScoreboard().getPlayerTeam(player);
+		if (team != null) {
+			team.removePlayer(player);
+		}
+
+		player.sendMessage(ChatColor.AQUA + "Teleporting you to the event arena."
+				+ "\nWhen you die, you will be teleported back with all your items and XP in order.");
+
+		return true;
+
+	}
+
+	private void save_player_data(Player player) {
 		String sPlayer = player.getName();
 		Location playerLocation = player.getLocation();
 		int playerFoodLevel = player.getFoodLevel();
@@ -85,7 +107,7 @@ public class EventCommand implements CommandExecutor {
 		GameMode gameMode = player.getGameMode();
 
 		/* Save all this data */
-		EventPlayer eventPlayer = new EventPlayer(uuid, sPlayer, playerLocation, playerFoodLevel, playerLevel, playerXP, armorContents, inventoryContents, playerHealth, potionEffects, gameMode, false);
+		EventPlayer eventPlayer = new EventPlayer(player.getUniqueId(), sPlayer, playerLocation, playerFoodLevel, playerLevel, playerXP, armorContents, inventoryContents, playerHealth, potionEffects, gameMode, false);
 		eventPlayer.save();
 
 		/* Log it all, just in case */
@@ -104,24 +126,6 @@ public class EventCommand implements CommandExecutor {
 		}
 
 		Events.instance.getLogger().info(sPlayer + " is participating in event: " + playerLevel + sInventoryContents);
-
-		/* Now we reset all their stuff and teleport them off */
-		player.setFoodLevel(20);
-		player.setLevel(0);
-		player.setExp(0);
-		player.getInventory().clear();
-		player.getInventory().setArmorContents(null);
-		player.setHealth(player.getMaxHealth());
-		for (PotionEffect potionEffect : player.getActivePotionEffects())
-			player.removePotionEffect(potionEffect.getType());
-		player.setGameMode(GameMode.SURVIVAL);
-		player.teleport(Event.getStartLocation());
-
-		player.sendMessage(ChatColor.AQUA + "Teleporting you to the event arena."
-				+ "\nWhen you die, you will be teleported back with all your items and XP in order.");
-
-		return true;
-
 	}
 
 }
