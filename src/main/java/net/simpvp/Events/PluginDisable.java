@@ -15,7 +15,7 @@ public class PluginDisable implements Listener {
 		for (Player p : Events.instance.getServer().getOnlinePlayers()) {
 			UUID uuid = p.getUniqueId();
 			if (!Event.isPlayerActive(uuid)) {
-				return;
+				continue;
 			}
 
 			EventPlayer eventPlayer = Event.getEventPlayer(uuid);
