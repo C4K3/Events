@@ -49,6 +49,11 @@ public class EventCommand implements CommandExecutor {
 					"Please tell the nice admin that they're missing something :)");
 			return true;
 		}
+		
+		if (Events.banned_players.contains(player.getUniqueId())) {
+			sender.sendMessage(ChatColor.RED + "You are banned from events.");
+			return true;
+		}
 
 		if (player.isInsideVehicle()) {
 			sender.sendMessage(ChatColor.RED + "You cannot join events while in a vehicle.");
