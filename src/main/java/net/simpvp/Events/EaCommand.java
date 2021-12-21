@@ -17,6 +17,7 @@ public class EaCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
+		String eventName = null;
 		Player player = null;
 		if (sender instanceof Player) {
 			player = (Player) sender;
@@ -77,7 +78,7 @@ public class EaCommand implements CommandExecutor {
 
 			for (int i = 1; i < args.length; i++)
 				sargs += " " + args[i];
-
+			Event.setEventName(sargs);
 			Events.instance.getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + 
 					/* sargs will have an extra space at the beginning,
 					 * so no need to add one here */
