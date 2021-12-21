@@ -42,6 +42,7 @@ public class EndEventCommand implements CommandExecutor {
 
 		Event.clearTeamSpawns();
 		Event.setIsActive(false);
+		Event.setEventName(null);
 
 		return true;
 	}
