@@ -19,7 +19,7 @@ public class Event {
 	private static HashMap<UUID, EventPlayer> eventPlayers = new HashMap<UUID, EventPlayer>();
 	private static HashMap<String, Location> teamSpawns = new HashMap<String, Location>();
 	private static Boolean keepMyInventory = false;
-	private static String eventName = "Welcome to simpvp";
+	private static String eventName = null;
 
 	/**
 	 * Gets whether the event is active or not.
