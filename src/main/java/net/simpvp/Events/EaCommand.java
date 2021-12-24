@@ -17,7 +17,6 @@ public class EaCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-		String eventName = null;
 		Player player = null;
 		if (sender instanceof Player) {
 			player = (Player) sender;
