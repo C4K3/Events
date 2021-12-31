@@ -10,8 +10,6 @@ import org.bukkit.Location;
  * This class stores data about the current event.
  */
 public class Event {
-	
-	public static Event event = new Event();
 
 	private static Boolean isActive = false;
 	private static Boolean isComplete = false;
