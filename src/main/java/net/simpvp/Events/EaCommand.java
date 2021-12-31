@@ -77,6 +77,7 @@ public class EaCommand implements CommandExecutor {
 
 			for (int i = 1; i < args.length; i++)
 				sargs += " " + args[i];
+			
 			Event.setEventName(sargs);
 			Events.instance.getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + 
 					/* sargs will have an extra space at the beginning,
