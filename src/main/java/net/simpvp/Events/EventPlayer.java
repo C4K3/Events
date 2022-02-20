@@ -1,6 +1,8 @@
 package net.simpvp.Events;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -29,6 +31,8 @@ public class EventPlayer {
 	private Collection<PotionEffect> potionEffects;
 	private GameMode playerGameMode;
 	private Boolean isQuitting;
+
+	public static Map<UUID, Long> playerLastJoinTime = new HashMap<>();
 
 	public EventPlayer(UUID uuid, String name, Location location, Integer foodLevel, Integer playerLevel, float playerXP, ItemStack[] armorContents,
 			ItemStack[] inventoryContents, Double playerHealth, Collection<PotionEffect> potionEffects, GameMode playerGameMode, Boolean isQuitting) {
@@ -178,6 +182,7 @@ public class EventPlayer {
 
 		Events.instance.getLogger().info(player.getName());
 
+		playerLastJoinTime.put(uuid, System.currentTimeMillis());
 		player.getInventory().setArmorContents(armorContents);
 		player.getInventory().setContents(inventoryContents);
 		player.setGameMode(playerGameMode);
