@@ -50,9 +50,9 @@ public class EventCommand implements CommandExecutor {
 			return true;
 		}
 
-		/* If player quit an event less than 5 seconds ago */
+		/* If player quit an event less than 4 seconds ago */
 		if (EventPlayer.playerLastJoinTime.containsKey(player.getUniqueId())) {
-			if (System.currentTimeMillis() - EventPlayer.playerLastJoinTime.get(player.getUniqueId()) < 5 * 1000) {
+			if (System.currentTimeMillis() - EventPlayer.playerLastJoinTime.get(player.getUniqueId()) < 4 * 1000) {
 				sender.sendMessage(ChatColor.RED + "Please wait a few seconds before joining.");
 				return true;
 			}
