@@ -49,6 +49,15 @@ public class EventCommand implements CommandExecutor {
 					"Please tell the nice admin that they're missing something :)");
 			return true;
 		}
+
+		/* If player quit an event less than 4 seconds ago */
+		if (EventPlayer.playerLastJoinTime.containsKey(player.getUniqueId())) {
+			if (System.currentTimeMillis() - EventPlayer.playerLastJoinTime.get(player.getUniqueId()) < 4 * 1000) {
+				sender.sendMessage(ChatColor.RED + "Please wait a few seconds before joining.");
+				return true;
+			}
+		}
+
 		
 		if (Events.banned_players.contains(player.getUniqueId())) {
 			sender.sendMessage(ChatColor.RED + "You are banned from events.");
