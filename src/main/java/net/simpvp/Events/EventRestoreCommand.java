@@ -1,13 +1,19 @@
 package net.simpvp.Events;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Base64;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.Material;
-import org.bukkit.ChatColor;
+import org.bukkit.util.io.BukkitObjectInputStream;
 
 /**
  * Adds the /eventrestore command
@@ -27,95 +33,44 @@ public class EventRestoreCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (args.length < 1) {
-			Events.instance.getLogger().info("You must provide at least one argument.");
+		if (args.length != 3) {
+			Events.instance.getLogger().info("You must provide exactly 3 arguments.");
 			return true;
 		}
+
+		String sPlayer = args[0];
+		String sLevel = args[1];
+		String sInventory = args[2];
 
 		@SuppressWarnings("deprecation") /* Only used on currently online players */
-		Player player = Events.instance.getServer().getPlayerExact(args[0]);
+		Player player = Events.instance.getServer().getPlayerExact(sPlayer);
 		if (player == null) {
-			Events.instance.getLogger().info("No such player found: " + args[0]);
+			Events.instance.getLogger().info(String.format("No such player found: %s", sPlayer));
 			return true;
 		}
 
-		for (String arg : args) {
-			if (!arg.matches(".*\\..*"))
-				continue;
+		try {
+			ByteArrayInputStream bytearray = new ByteArrayInputStream(sInventory.getBytes());
+			InputStream base64 = Base64.getDecoder().wrap(bytearray);
 
-			ItemStack itemstack = createItemStack(arg);
-			if (itemstack == null)
-				return true;
+			BukkitObjectInputStream bukkitstream = new BukkitObjectInputStream(base64);
 
-			player.getWorld().dropItem(player.getLocation(), itemstack);
+			int len = bukkitstream.readInt();
+			ArrayList<ItemStack> inventory = new ArrayList<>();
+
+			for (int i = 0; i < len; i++) {
+				ItemStack item = (ItemStack) bukkitstream.readObject();
+				inventory.add(item);
+			}
+
+			for (ItemStack item : inventory) {
+				player.getWorld().dropItem(player.getLocation(), item);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 
 		return true;
-	}
-
-	/**
-	 * Create an itemstack given a 4-point string
-	 */
-	private ItemStack createItemStack(String item) {
-		Events.instance.getLogger().info("create item: " + item);
-		String[] input = item.split("\\.");
-
-		if (input.length != 4)
-			return null;
-
-
-		/* damage = durability inverse */
-		int amount;
-		short damage;
-		Material material;
-		try {
-			amount = Integer.parseInt(input[1]);
-			damage = Short.parseShort(input[2]);
-			material = Material.valueOf(input[0]);
-		} catch (Exception e) {
-			return null;
-		}
-
-		ItemStack ret = new ItemStack(material, amount, damage);
-		ret = addEnchantments(ret, input[3]);
-
-		return ret;
-	}
-
-	/**
-	 * Add the given enchantments to the given ItemStack
-	 */
-	private ItemStack addEnchantments(ItemStack input, String enchants) {
-		/* AFAIK there's no easy way to do regex captures in java,
-		 * so instead we're just going to do it this hacky way.
-		 *
-		 * This code is ugly as fuck, but it works. */
-		enchants = enchants.replaceAll("\\{", "");
-		enchants = enchants.replaceAll("\\}", "");
-
-		enchants = "," + enchants;
-		enchants = enchants.replaceAll(",Ench", "");
-
-		String[] enchantments = enchants.split("antment\\S+?,");
-
-		for (String enchantment : enchantments) {
-			if (!enchantment.matches(".*=.*"))
-				continue;
-
-			String[] tmp = enchantment.split("]=");
-			Enchantment ench;
-			int level;
-			try {
-				ench = Enchantment.getByName(tmp[0]);
-				level = Integer.parseInt(tmp[1]);
-			} catch (Exception e) {
-				return null;
-			}
-
-			input.addEnchantment(ench, level);
-		}
-
-		return input;
 	}
 
 }

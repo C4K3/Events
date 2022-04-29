@@ -1,7 +1,10 @@
 package net.simpvp.Events;
 
+import java.util.Base64;
 import java.util.Collection;
 import java.util.UUID;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -14,9 +17,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
 /** This class is responsible for handling the /event command.
- * 
+ *
  * Saves all the player's information.
  *  Teleports users to the set starting location of the event.
  *  And prepares them for the event. */
@@ -125,21 +129,38 @@ public class EventCommand implements CommandExecutor {
 		eventPlayer.save();
 
 		/* Log it all, just in case */
-		String sInventoryContents = "";
+		String inventoryString;
+		try {
+			ByteArrayOutputStream bytearray = new ByteArrayOutputStream();
+			OutputStream base64 = Base64.getEncoder().wrap(bytearray);
+			BukkitObjectOutputStream bukkitstream = new BukkitObjectOutputStream(base64);
 
-		for (ItemStack itemStack : inventoryContents) {
-			if (itemStack == null)
-				continue;
+			int len = 0;
+			for (ItemStack itemStack : inventoryContents) {
+				if (itemStack == null) {
+					continue;
+				}
+				len += 1;
+			}
+			bukkitstream.writeInt(len);
 
-			String tmp = itemStack.getType().toString()
-				+ "." + itemStack.getAmount()
-				+ "." + itemStack.getDurability()
-				+ "." + itemStack.getEnchantments().toString();
-			tmp = tmp.replaceAll(" ", "");
-			sInventoryContents += " " + tmp;
+			for (ItemStack itemStack : inventoryContents) {
+				if (itemStack == null) {
+					continue;
+				}
+
+				bukkitstream.writeObject(itemStack);
+			}
+
+			bukkitstream.close();
+			base64.close();
+
+			inventoryString = new String(bytearray.toByteArray());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 
-		Events.instance.getLogger().info(sPlayer + " is participating in event: " + playerLevel + sInventoryContents);
+		Events.instance.getLogger().info(String.format("%s is participating in event: %d %s", sPlayer, playerLevel, inventoryString));
 	}
 
 }
