@@ -1,10 +1,10 @@
 package net.simpvp.Events;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.UUID;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -19,6 +19,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.MarkerManager;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.Level;
+
 /** This class is responsible for handling the /event command.
  *
  * Saves all the player's information.
@@ -26,8 +32,10 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
  *  And prepares them for the event. */
 public class EventCommand implements CommandExecutor {
 
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	private Logger INVENTORY_LOGGER = LogManager.getLogger("InventoryLog");
+	private static final Marker INVENTORY_MARKER = MarkerManager.getMarker("INVENTORY");
 
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player = null;
 		if (sender instanceof Player) {
 			player = (Player) sender;
@@ -129,38 +137,40 @@ public class EventCommand implements CommandExecutor {
 		eventPlayer.save();
 
 		/* Log it all, just in case */
-		String inventoryString;
-		try {
-			ByteArrayOutputStream bytearray = new ByteArrayOutputStream();
-			OutputStream base64 = Base64.getEncoder().wrap(bytearray);
-			BukkitObjectOutputStream bukkitstream = new BukkitObjectOutputStream(base64);
+		if (INVENTORY_LOGGER.isDebugEnabled()) {
+			try {
+				ByteArrayOutputStream bytearray = new ByteArrayOutputStream();
+				OutputStream base64 = Base64.getEncoder().wrap(bytearray);
+				BukkitObjectOutputStream bukkitstream = new BukkitObjectOutputStream(base64);
 
-			int len = 0;
-			for (ItemStack itemStack : inventoryContents) {
-				if (itemStack == null) {
-					continue;
+				int len = 0;
+				for (ItemStack itemStack : inventoryContents) {
+					if (itemStack == null) {
+						continue;
+					}
+					len += 1;
 				}
-				len += 1;
-			}
-			bukkitstream.writeInt(len);
+				bukkitstream.writeInt(len);
 
-			for (ItemStack itemStack : inventoryContents) {
-				if (itemStack == null) {
-					continue;
+				for (ItemStack itemStack : inventoryContents) {
+					if (itemStack == null) {
+						continue;
+					}
+
+					bukkitstream.writeObject(itemStack);
 				}
 
-				bukkitstream.writeObject(itemStack);
+				bukkitstream.close();
+				base64.close();
+
+				INVENTORY_LOGGER.debug(INVENTORY_MARKER, String.format("%s is participating in event: '%d %d %d %s' %d %s", sPlayer, playerLocation.getBlockX(), playerLocation.getBlockY(), playerLocation.getBlockZ(), playerLocation.getWorld().getName(), playerLevel, bytearray.toString()));
+			} catch (Exception e) {
+				Events.instance.getLogger().warning("Failed to log inventory: " + e);
+				e.printStackTrace();
 			}
-
-			bukkitstream.close();
-			base64.close();
-
-			inventoryString = new String(bytearray.toByteArray());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		}
 
-		Events.instance.getLogger().info(String.format("%s is participating in event: %d %s", sPlayer, playerLevel, inventoryString));
+		Events.instance.getLogger().info(String.format("%s is participating in event", sPlayer));
 	}
 
 }

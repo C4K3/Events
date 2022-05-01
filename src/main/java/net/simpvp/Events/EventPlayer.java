@@ -179,9 +179,6 @@ public class EventPlayer {
 	 *  @param player Bukkit.entity.Player object for the player 
 	 */
 	public void sendHome(final Player player) {
-
-		Events.instance.getLogger().info(player.getName());
-
 		playerLastJoinTime.put(uuid, System.currentTimeMillis());
 		player.getInventory().setArmorContents(armorContents);
 		player.getInventory().setContents(inventoryContents);
