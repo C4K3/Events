@@ -179,15 +179,15 @@ public class EventPlayer {
 	 *  @param player Bukkit.entity.Player object for the player 
 	 */
 	public void sendHome(final Player player) {
-		for (PotionEffect effect: player.getActivePotionEffects()) {
-			player.removePotionEffect(effect.getType());
-		}
 		playerLastJoinTime.put(uuid, System.currentTimeMillis());
 		player.getInventory().setArmorContents(armorContents);
 		player.getInventory().setContents(inventoryContents);
 		player.setGameMode(playerGameMode);
 		player.setFoodLevel(foodLevel);
 		player.setHealth(playerHealth);
+		for (PotionEffect effect: player.getActivePotionEffects()) {
+			player.removePotionEffect(effect.getType());
+		}
 		player.addPotionEffects(potionEffects);
 		player.setLevel(playerLevel);
 		player.setExp(playerXP);
