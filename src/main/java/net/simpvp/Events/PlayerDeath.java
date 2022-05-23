@@ -29,7 +29,7 @@ public class PlayerDeath implements Listener {
 
 		event.setDroppedExp(0);
 
-		if (Event.getKeepMyInventory() == true) {
+		if (Event.getKeepMyInventory()) {
 			if (!eplayer.getIsQuitting()) {
 				event.setKeepInventory(true);
 			}

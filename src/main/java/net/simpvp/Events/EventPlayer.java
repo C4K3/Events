@@ -185,6 +185,9 @@ public class EventPlayer {
 		player.setGameMode(playerGameMode);
 		player.setFoodLevel(foodLevel);
 		player.setHealth(playerHealth);
+		for (PotionEffect effect: player.getActivePotionEffects()) {
+			player.removePotionEffect(effect.getType());
+		}
 		player.addPotionEffects(potionEffects);
 		player.setLevel(playerLevel);
 		player.setExp(playerXP);
