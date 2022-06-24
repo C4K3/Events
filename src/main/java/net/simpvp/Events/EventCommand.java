@@ -81,7 +81,7 @@ public class EventCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (player.getLocation().getY() < 0.0) {
+		if (player.getLocation().getY() < -64.0) {
 			sender.sendMessage(ChatColor.RED + "You cannot join events from your current location.");
 			return true;
 		}
