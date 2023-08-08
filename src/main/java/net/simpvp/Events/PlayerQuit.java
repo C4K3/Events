@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class PlayerQuit implements Listener {
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled=true)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled=true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 
 		UUID uuid = event.getPlayer().getUniqueId();
